@@ -1,17 +1,13 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
+import cors from 'cors';
+import userRouter from './routes/userRouter';
 
 const app = express();
-const filePath = `${path.resolve(__dirname)}/routes/users.json`;
 
 app.use(express.json());
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
 
-app.get('/users', (req, res) => {
-  const content = fs.readFileSync(filePath, 'utf-8');
-  const users = JSON.parse(content);
-
-  res.send(users);
-});
+app.use('/users', userRouter);
 
 export default app;
