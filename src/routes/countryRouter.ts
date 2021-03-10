@@ -1,7 +1,7 @@
 import { Router } from 'express';
 // import fs from 'fs';
 // import path from 'path';
-import MongoController from '../mongoStore/mongoController';
+import MongoController from '../mongoStore/MongoController';
 import { v4 as uuid } from 'uuid';
 
 const router = Router();
