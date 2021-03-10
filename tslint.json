@@ -7,6 +7,7 @@
   ],
   "jsRules": {},
   "rules": {
+    "no-trailing-whitespace": [true, "ignore-blank-lines"],
     "no-console": false,
     "quotemark": [
       true,
