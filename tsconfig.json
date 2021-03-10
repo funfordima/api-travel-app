@@ -1,10 +1,19 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "target": "ES6",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "removeComments": true,
-    "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "./dist",
     "baseUrl": ".",
+    "skipLibCheck": true,
+    "types": ["node"],
+    "rootDirs": [
+      "src/",
+    ],
     "paths": {
       "*": [
         "node_modules/*"

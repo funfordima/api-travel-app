@@ -1,6 +1,6 @@
-import { MongoClient } from 'mongodb';
+import { Collection, Db, MongoClient, InsertOneWriteOpResult, DeleteWriteOpResultObject } from 'mongodb';
 
-class MongoController {
+export class MongoController {
   dbName: string;
   URL: string;
   // instance: any;
@@ -18,7 +18,7 @@ class MongoController {
     return MongoController.instance;
   }
 
-  async getMongoInstance() {
+  async getMongoInstance(): Promise<Db> {
     try {
       if (!this.client) {
         this.client = await MongoClient.connect(this.URL, { useUnifiedTopology: true });
@@ -30,7 +30,7 @@ class MongoController {
     }
   }
 
-  async getCollection(collectionName: string) {
+  async getCollection(collectionName: string): Promise<Collection> {
     try {
       const db = await this.getMongoInstance();
       const collection = db.collection(collectionName);
@@ -41,39 +41,39 @@ class MongoController {
     }
   }
 
-  async listAll(collectionName: string) {
+  async listAll(collectionName: string): Promise<any[]> {
     const collection = await this.getCollection(collectionName);
 
     return collection.find({}).toArray();
   }
 
-  async getById(collectionName: string, id: string) {
+  async getById(collectionName: string, id: string): Promise<any[]> {
     const collection = await this.getCollection(collectionName);
 
     return collection.findOne({ id });
   }
 
-  async createItem(collectionName: string, item: any) {
+  async createItem(collectionName: string, item: any): Promise<InsertOneWriteOpResult<any>> {
     const collection = await this.getCollection(collectionName);
     const response = await collection.insertOne(item);
 
     return response.ops[0];
   }
 
-  async createItems(collectionName: string, item: any) {
+  async createItems(collectionName: string, item: any): Promise<InsertOneWriteOpResult<any>> {
     const collection = await this.getCollection(collectionName);
     const response = await collection.insertMany(item);
 
     return response.ops[0];
   }
 
-  async deleteItem(collectionName: string, id: string) {
+  async deleteItem(collectionName: string, id: string): Promise<DeleteWriteOpResultObject> {
     const collection = await this.getCollection(collectionName);
 
     return collection.deleteOne({ id });
   }
 
-  async updateItem(collectionName: string, item: any) {
+  async updateItem(collectionName: string, item: any): Promise<InsertOneWriteOpResult<any>> {
     const collection = await this.getCollection(collectionName);
   
     const id = item._id;
@@ -83,5 +83,3 @@ class MongoController {
     return response.ops[0];
   }
 }
-
-export default MongoController;

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { v4 as uuid } from 'uuid';
-import MongoController from '../mongoStore/MongoController';
+import { MongoController } from '../mongoStore/mongoController';
 
 const countryRouter = Router();
 const dbName = 'countries';
