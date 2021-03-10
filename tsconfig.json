@@ -2,8 +2,16 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "removeComments": true,
+    "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ]
+    }
   },
-  "sourceMap": true
+  "include": [
+    "src/**/*"
+  ]
 }
