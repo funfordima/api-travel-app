@@ -7,7 +7,6 @@
   "scripts": {
     "start": "node .",
     "build": "tsc",
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "postinstall": "npm run build",
     "watch": "ts-node-dev --respawn --transpile-only src/index.ts",
     "tslint": "tslint --project tsconfig.json",
