@@ -8,7 +8,7 @@ const countryRouter = Router();
 const dbName = 'countries';
 // const filePath = `${path.resolve(__dirname)}/users.json`;
 
-router.get('/', async (req, res) => {
+countryRouter.get('/', async (req, res) => {
   try {
     const content = await new MongoController().listAll(dbName);
 
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res, next) => {
+countryRouter.get('/:id', async (req, res, next) => {
   const item = await new MongoController().getById(dbName, req.params.id);
 
   console.log(req.params.id);
@@ -29,7 +29,7 @@ router.get('/:id', async (req, res, next) => {
     });
 });
 
-router.post('/', async (req, res, next) => {
+countryRouter.post('/', async (req, res, next) => {
   // const id = uuid();
   const { body } = req;
 
@@ -41,7 +41,7 @@ router.post('/', async (req, res, next) => {
   res.json(newBody);
 });
 
-router.put('/:id', async (req, res, next) => {
+countryRouter.put('/:id', async (req, res, next) => {
   const { body } = req;
   const newBody = await new MongoController().updateItem(dbName, {
     ...body,
@@ -51,7 +51,7 @@ router.put('/:id', async (req, res, next) => {
   res.json(newBody);
 });
 
-router.delete('/:id', async (req, res, next) => {
+countryRouter.delete('/:id', async (req, res, next) => {
   await new MongoController().deleteItem(dbName, req.params._id);
 
   res
