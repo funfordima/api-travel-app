@@ -1,12 +1,9 @@
 import { Router } from 'express';
-// import fs from 'fs';
-// import path from 'path';
-import MongoController from '../mongoStore/MongoController';
 import { v4 as uuid } from 'uuid';
+import MongoController from '../mongoStore/MongoController';
 
 const countryRouter = Router();
 const dbName = 'countries';
-// const filePath = `${path.resolve(__dirname)}/users.json`;
 
 countryRouter.get('/', async (req, res) => {
   try {
