@@ -4,7 +4,7 @@ import { Router } from 'express';
 import MongoController from '../mongoStore/MongoController';
 import { v4 as uuid } from 'uuid';
 
-const router = Router();
+const countryRouter = Router();
 const dbName = 'countries';
 // const filePath = `${path.resolve(__dirname)}/users.json`;
 
@@ -59,4 +59,4 @@ router.delete('/:id', async (req, res, next) => {
     .json(null);
 });
 
-export default router;
+export default countryRouter;
