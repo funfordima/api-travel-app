@@ -3,7 +3,6 @@ import { Collection, Db, MongoClient, InsertOneWriteOpResult, DeleteWriteOpResul
 export class MongoController {
   dbName: string;
   URL: string;
-  // instance: any;
   static instance: any;
   client: MongoClient;
 
