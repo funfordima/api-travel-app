@@ -38,7 +38,7 @@ placeRouter.post('/', async (req, res, next) => {
 
 placeRouter.put('/:id', async (req, res, next) => {
   const { body } = req;
-  const newBody = await new MongoController().updateItem(dbName, {
+  const newBody = await new MongoController().updateItemPlace(dbName, {
     ...body,
     id: req.params.id,
   });
