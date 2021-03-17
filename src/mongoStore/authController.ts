@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import User from '../models/User';
 import Role from '../models/Role';
+import { validationResult } from 'express-validator';
 const bcrypt = require('bcryptjs');
 
 class AuthController {
@@ -9,16 +10,35 @@ class AuthController {
     await mongoose.connect('mongodb+srv://admin:qwerty123@cluster0.zasbp.mongodb.net/travel-app?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, });
 
     try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          message: 'Registration error', 
+          errors
+        });
+      }
+
       const { username, password, lastname, email } = req.body;
+
       const candidate = await User.findOne({username});
 
       if (candidate) {
-        return res.status(400).json({message: 'User already exists with the same name'});
+        return res.status(400).json({
+          message: 'User already exists with the same name'
+        });
       }
 
       const hashPassword = bcrypt.hashSync(password, 7);
+
       const userRole = await Role.findOne({value: 'USER'});
-      const user = new User({username, lastname, email, password: hashPassword, roles: [userRole.value]});
+      const user = new User({
+        username, 
+        lastname, 
+        email, 
+        password: hashPassword, 
+        roles: [userRole.value]
+      });
 
       await user.save();
 
