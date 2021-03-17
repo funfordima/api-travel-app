@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import countryRouter from './routes/countryRouter';
 import placeRouter from './routes/placeRouter';
+import authRouter from './routes/authRouter';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/countries', countryRouter);
 app.use('/places', placeRouter);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
