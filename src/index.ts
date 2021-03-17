@@ -22,4 +22,12 @@ app.get('/', (request, response) => {
   response.send('Hello world!');
 });
 
-app.listen(port, () => console.log(`Running on port ${port}...`));
+const start = () => {
+  try {
+    app.listen(port, () => console.log(`Running on port ${port}...`));
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
+start();
