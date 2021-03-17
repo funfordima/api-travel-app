@@ -4,9 +4,10 @@ import Role from '../models/Role';
 import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import secret from './config';
+import { UserRole, UserData, Roles } from '../interface';
 const bcrypt = require('bcryptjs');
 
-const generateAccessToken = (id: string, roles: string[]): string => {
+const generateAccessToken = (id: string, roles: Roles[]): string => {
   const payload = {
     id,
     roles
@@ -48,7 +49,7 @@ class AuthController {
         lastname, 
         email, 
         password: hashPassword, 
-        roles: [userRole.value]
+        roles: [(userRole as UserRole).value]
       });
 
       await user.save();
@@ -64,23 +65,25 @@ class AuthController {
     await mongoose.connect('mongodb+srv://admin:qwerty123@cluster0.zasbp.mongodb.net/travel-app?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, });
 
   try {
-    const { username, password, email } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({message: `User ${username} not found`});
+      return res.status(400).json({message: `User ${email} not found`});
     }
 
-    const validPassword = bcrypt.compareSync(password, user.password);
+    const validPassword = bcrypt.compareSync(password, (user as UserData).password);
 
     if (!validPassword) {
       return res.status(400).json({message: `Incorrect password entered`});
     }
 
-    const token = generateAccessToken(user._id, user.roles);
+    const token = generateAccessToken(user._id, (user as UserData).roles);
 
-    return res.json({ token });
+    const { username, lastname, photoUrl } = user as UserData;
+
+    return res.json({ token, username, lastname, photoUrl, email });
   }  catch (err) {
     console.error(err);
     res.status(400).json({message: 'Login error'});
@@ -90,7 +93,9 @@ class AuthController {
   async getUsers(req, res) {
     await mongoose.connect('mongodb+srv://admin:qwerty123@cluster0.zasbp.mongodb.net/travel-app?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, });
 
-    console.log('saved');
+    const users = await User.find();
+
+    res.json(users);
     try {
 
     } catch (err) {
