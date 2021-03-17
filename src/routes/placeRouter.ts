@@ -47,7 +47,7 @@ placeRouter.put('/:id', async (req, res, next) => {
 });
 
 placeRouter.delete('/:id', async (req, res, next) => {
-  await new MongoController().deleteItem(dbName, req.params._id);
+  await new MongoController().deleteItem(dbName, req.params.id);
 
   res
     .status(404)

@@ -75,7 +75,7 @@ export class MongoController {
   async updateItem(collectionName: string, item: any): Promise<InsertOneWriteOpResult<any>> {
     const collection = await this.getCollection(collectionName);
   
-    const id = item._id;
+    const id = item.id;
   
     const response = await collection.replaceOne({ id }, item);
   
