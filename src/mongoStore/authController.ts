@@ -70,13 +70,13 @@ class AuthController {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({message: `User ${email} not found`});
+      return res.status(400).json(new Error(`User ${email} not found`));
     }
 
     const validPassword = bcrypt.compareSync(password, (user as UserData).password);
 
     if (!validPassword) {
-      return res.status(400).json({message: `Incorrect password entered`});
+      return res.status(400).json(new Error(`Incorrect password entered`));
     }
 
     const token = generateAccessToken(user._id, (user as UserData).roles);
@@ -86,20 +86,40 @@ class AuthController {
     return res.json({ token, username, lastname, photoUrl, email });
   }  catch (err) {
     console.error(err);
-    res.status(400).json({message: 'Login error'});
+    res.status(400).json(new Error('Login error'));
   }   
   }
 
   async getUsers(req, res) {
     await mongoose.connect('mongodb+srv://admin:qwerty123@cluster0.zasbp.mongodb.net/travel-app?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, });
-
-    const users = await User.find();
-
-    res.json(users);
+    
     try {
+      const users = await User.find();
 
+      res.json(users);
     } catch (err) {
+      console.error(err);
+    }
+  }
 
+  async updateUser(req, res) {
+    await mongoose.connect('mongodb+srv://admin:qwerty123@cluster0.zasbp.mongodb.net/travel-app?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, });
+
+    try {
+      const email = req.params.email;
+
+      const user = await User.findOne({ email });   
+      
+      if (!user) {
+        return res.status(400).json(new Error(`User ${email} not found`));
+      }
+
+      const { body } = req;
+
+      const newUser = await User.replaceOne({ email }, { ...user, ...body });
+    } catch (err) {
+      console.error(err);
+      res.status(400).json(new Error('Update user error'));
     }
   }
 }

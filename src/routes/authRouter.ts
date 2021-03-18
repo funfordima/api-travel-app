@@ -14,4 +14,6 @@ authRouter.post('/registration', [
 
 authRouter.post('/login', authController.login);
 
+authRouter.put('/:email', authController.updateUser);
+
 export default authRouter;
