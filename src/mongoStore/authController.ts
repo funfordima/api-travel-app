@@ -108,7 +108,9 @@ class AuthController {
     try {
       const email = req.params.email;
 
-      const user = await User.findOne({ email });   
+      const user = await User.findOne({ email });
+      
+      const { username, lastname, password, photoUrl = '' } = user as UserData;
       
       if (!user) {
         return res.status(400).json(new Error(`User ${email} not found`));
@@ -116,7 +118,9 @@ class AuthController {
 
       const { body } = req;
 
-      const newUser = await User.replaceOne({ email }, { ...user, ...body });
+      await User.replaceOne({ email }, { username, lastname, password, photoUrl, ...body });
+
+      return res.status(200).json({message: 'User was updated successfully'});
     } catch (err) {
       console.error(err);
       res.status(400).json(new Error('Update user error'));
